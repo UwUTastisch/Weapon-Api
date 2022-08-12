@@ -1,7 +1,7 @@
-package net.theallay.weaponapi.listeners;
+package net.maidkleid.weaponapi.listeners;
 
-import net.theallay.weaponapi.weaponlib.WeaponInstance;
-import net.theallay.weaponapi.weaponlib.WeaponLib;
+import net.maidkleid.weaponapi.weaponlib.WeaponLib;
+import net.maidkleid.weaponapi.weaponlib.WeaponInstance;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;

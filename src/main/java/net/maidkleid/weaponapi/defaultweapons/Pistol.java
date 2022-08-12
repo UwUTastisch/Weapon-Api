@@ -1,9 +1,9 @@
-package net.theallay.weaponapi.defaultweapons;
+package net.maidkleid.weaponapi.defaultweapons;
 
-import net.theallay.weaponapi.weaponlib.AmmoType;
-import net.theallay.weaponapi.weaponlib.Shoot;
-import net.theallay.weaponapi.weaponlib.Weapon;
-import net.theallay.weaponapi.weaponlib.WeaponInstance;
+import net.maidkleid.weaponapi.weaponlib.AmmoType;
+import net.maidkleid.weaponapi.weaponlib.Shoot;
+import net.maidkleid.weaponapi.weaponlib.Weapon;
+import net.maidkleid.weaponapi.weaponlib.WeaponInstance;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;

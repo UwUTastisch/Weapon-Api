@@ -1,6 +1,6 @@
-package net.theallay.weaponapi.weaponlib;
+package net.maidkleid.weaponapi.weaponlib;
 
-import net.theallay.weaponapi.utils.WeaponItemLowLevelUtils;
+import net.maidkleid.weaponapi.utils.WeaponItemLowLevelUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;

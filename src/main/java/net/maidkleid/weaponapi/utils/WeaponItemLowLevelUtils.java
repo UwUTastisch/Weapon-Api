@@ -1,6 +1,6 @@
-package net.theallay.weaponapi.utils;
+package net.maidkleid.weaponapi.utils;
 
-import net.theallay.weaponapi.WeaponAPI;
+import net.maidkleid.weaponapi.WeaponAPI;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;

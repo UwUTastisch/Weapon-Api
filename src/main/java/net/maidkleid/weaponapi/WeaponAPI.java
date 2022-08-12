@@ -1,7 +1,7 @@
-package net.theallay.weaponapi;
+package net.maidkleid.weaponapi;
 
-import net.theallay.weaponapi.commands.WeaponCommand;
-import net.theallay.weaponapi.listeners.OnClickListener;
+import net.maidkleid.weaponapi.commands.WeaponCommand;
+import net.maidkleid.weaponapi.listeners.OnClickListener;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 

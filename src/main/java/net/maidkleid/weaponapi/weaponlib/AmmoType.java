@@ -1,4 +1,4 @@
-package net.theallay.weaponapi.weaponlib;
+package net.maidkleid.weaponapi.weaponlib;
 
 public enum AmmoType {
 

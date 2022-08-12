@@ -1,6 +1,5 @@
-package net.theallay.weaponapi.weaponlib;
+package net.maidkleid.weaponapi.weaponlib;
 
-import net.theallay.weaponapi.defaultweapons.Pistol;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 

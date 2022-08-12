@@ -1,9 +1,7 @@
-package net.theallay.weaponapi.weaponlib;
+package net.maidkleid.weaponapi.weaponlib;
 
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.util.Vector;
-import org.jetbrains.annotations.Nullable;
 
 public class Shoot {
 

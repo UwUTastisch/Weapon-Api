@@ -1,7 +1,7 @@
-package net.theallay.weaponapi.utils;
+package net.maidkleid.weaponapi.utils;
 
-import net.theallay.weaponapi.weaponlib.Weapon;
-import net.theallay.weaponapi.weaponlib.WeaponLib;
+import net.maidkleid.weaponapi.weaponlib.Weapon;
+import net.maidkleid.weaponapi.weaponlib.WeaponLib;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 

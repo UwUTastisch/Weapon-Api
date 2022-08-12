@@ -1,9 +1,8 @@
-package net.theallay.weaponapi.commands;
+package net.maidkleid.weaponapi.commands;
 
-import net.theallay.weaponapi.utils.ItemBuilder;
-import net.theallay.weaponapi.weaponlib.Weapon;
-import net.theallay.weaponapi.weaponlib.WeaponLib;
-import org.bukkit.Bukkit;
+import net.maidkleid.weaponapi.utils.ItemBuilder;
+import net.maidkleid.weaponapi.weaponlib.Weapon;
+import net.maidkleid.weaponapi.weaponlib.WeaponLib;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.Command;

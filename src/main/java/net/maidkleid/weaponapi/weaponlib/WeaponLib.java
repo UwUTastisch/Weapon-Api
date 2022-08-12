@@ -1,6 +1,6 @@
-package net.theallay.weaponapi.weaponlib;
+package net.maidkleid.weaponapi.weaponlib;
 
-import net.theallay.weaponapi.defaultweapons.Pistol;
+import net.maidkleid.weaponapi.defaultweapons.Pistol;
 
 import java.util.HashMap;
 
