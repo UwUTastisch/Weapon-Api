@@ -4,6 +4,7 @@ import net.theallay.weaponapi.weaponlib.AmmoType;
 import net.theallay.weaponapi.weaponlib.Shoot;
 import net.theallay.weaponapi.weaponlib.Weapon;
 import net.theallay.weaponapi.weaponlib.WeaponInstance;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -25,14 +26,14 @@ public class Pistol implements Weapon {
     }
 
     @Override
-    public PistolInstance getWeaponInstance(Player player, ItemStack stack) {
-        return new PistolInstance(this,player, stack);
+    public PistolInstance getWeaponInstance(Player player, int slot, ItemStack stack) {
+        return new PistolInstance(this,player, slot, stack);
     }
 
     public static class PistolInstance extends WeaponInstance {
 
-        private PistolInstance(Pistol pistol, Player player, ItemStack itemStack) {
-            super(pistol, player, itemStack);
+        private PistolInstance(Pistol pistol, Player player, int slot, ItemStack itemStack) {
+            super(pistol, player, slot, itemStack);
         }
 
         @Override
@@ -42,7 +43,11 @@ public class Pistol implements Weapon {
 
         @Override
         public Shoot shoot() {
-            return null;
+            Location l = getHandlingPlayer().getEyeLocation();
+            return new Shoot(this,
+                    l,
+                    l.clone(),
+                    l.getDirection().normalize().multiply(20));
         }
 
         @Override
@@ -54,6 +59,7 @@ public class Pistol implements Weapon {
         protected ItemStack returnUpdatedItemStack() {
             return itemStack;
         }
+
     }
 
 

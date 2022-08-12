@@ -1,21 +1,45 @@
 package net.theallay.weaponapi.weaponlib;
 
+import net.theallay.weaponapi.utils.WeaponItemLowLevelUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.UUID;
 
 public abstract class WeaponInstance implements Weapon {
 
     protected final Weapon weapon;
     private final Player player;
-    protected final ItemStack itemStack;
+    protected ItemStack itemStack;
 
-    protected WeaponInstance(Weapon weapon, Player player, ItemStack itemStack) {
+    protected int slot;
+    protected final UUID weaponUUID;
+
+
+    protected WeaponInstance(Weapon weapon, Player player, int slot , ItemStack itemStack) {
         this.weapon = weapon;
         this.player = player;
         this.itemStack = itemStack;
+        this.slot = slot;
+        this.weaponUUID = WeaponItemLowLevelUtils.getUUID(itemStack.getItemMeta());
     }
 
-    public abstract int getCurrentAmmo();
+    /**
+     * Before using Check what you're doing with {@link WeaponInstance}.isStillInSlot()
+     * @return -500 if the ItemStack is not anymore in the current InventorySlot
+     */
+    public int getCurrentAmmo() {
+        if(!isStillInSlot()) return -500;
+        try {
+            return WeaponItemLowLevelUtils.getCurrentAmmo(itemStack.getItemMeta());
+        } catch (Exception e) {
+            int magsize = getMagSize();
+            itemStack.editMeta(itemMeta -> WeaponItemLowLevelUtils.setAmmoTo(itemMeta,magsize));
+            return magsize;
+        }
+
+    }
 
     public Player getHandlingPlayer() {
         return player;
@@ -27,6 +51,17 @@ public abstract class WeaponInstance implements Weapon {
 
     protected abstract ItemStack returnUpdatedItemStack();
 
+    public boolean isStillInSlot() {
+        ItemStack stack = player.getInventory().getStorageContents()[slot];
+        try {
+            return weaponUUID.equals(
+                    WeaponItemLowLevelUtils.getUUID(stack.getItemMeta())
+            );
+        } catch (Exception e) {
+            return false;
+        }
+
+    }
     @Override
     public int getMagSize() {
         return weapon.getMagSize();
@@ -43,7 +78,7 @@ public abstract class WeaponInstance implements Weapon {
     }
 
     @Override
-    public WeaponInstance getWeaponInstance(Player player, ItemStack itemStack) {
-        return weapon.getWeaponInstance(player, itemStack);
+    public @Nullable WeaponInstance getWeaponInstance(Player player, int slot, ItemStack itemStack) {
+        return weapon.getWeaponInstance(player, slot, itemStack);
     }
 }
