@@ -3,3 +3,11 @@ version: '${project.version}'
 main: net.theallay.weaponapi.WeaponAPI
 api-version: 1.19
 authors: [ Hero_JonasHD ]
+commands:
+  weapon:
+    aliases:
+      - w
+      - weapons
+      - wapi
+    description: lol
+  

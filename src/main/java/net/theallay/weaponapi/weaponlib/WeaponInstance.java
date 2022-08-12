@@ -38,7 +38,18 @@ public abstract class WeaponInstance implements Weapon {
             itemStack.editMeta(itemMeta -> WeaponItemLowLevelUtils.setAmmoTo(itemMeta,magsize));
             return magsize;
         }
+    }
 
+    public Weapon getWeapon() {
+        return weapon;
+    }
+
+    public int getSlot() {
+        return slot;
+    }
+
+    public int getXP() {
+        return WeaponItemLowLevelUtils.getWeaponXP(itemStack.getItemMeta());
     }
 
     public Player getHandlingPlayer() {
