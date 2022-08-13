@@ -2,7 +2,7 @@ package net.maidkleid.weaponapi.commands;
 
 import net.maidkleid.weaponapi.utils.WeaponItemMidLevelUtils;
 import net.maidkleid.weaponapi.weaponlib.Weapon;
-import net.maidkleid.weaponapi.weaponlib.WeaponLib;
+import net.maidkleid.weaponapi.weaponlib.WeaponEnum;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -20,12 +20,12 @@ public class WeaponCommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         try {
-            WeaponLib weaponLib = WeaponLib.valueOf(args[0]);
-            Weapon w = weaponLib.INSTANCE;
+            WeaponEnum weaponEnum = WeaponEnum.valueOf(args[0]);
+            Weapon w = weaponEnum.CLASS;
             if(sender instanceof Player player) {
                 Location l = player.getLocation();
                 World world = l.getWorld();
-                world.dropItem(l, WeaponItemMidLevelUtils.getWeaponItem(weaponLib));
+                world.dropItem(l, WeaponItemMidLevelUtils.getWeaponItem(weaponEnum));
             }
         } catch (Exception e) {
             return false;
@@ -37,7 +37,7 @@ public class WeaponCommand implements CommandExecutor, TabCompleter {
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         ArrayList<String> l = new ArrayList<>();
-        for (WeaponLib value : WeaponLib.values()) {
+        for (WeaponEnum value : WeaponEnum.values()) {
             l.add(value.name());
         }
         return l;

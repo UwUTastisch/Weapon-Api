@@ -4,22 +4,22 @@ import net.maidkleid.weaponapi.defaultweapons.Pistol;
 
 import java.util.HashMap;
 
-public enum WeaponLib {
+public enum WeaponEnum {
     PISTOL(new Pistol());
-    public final Weapon INSTANCE;
+    public final Weapon CLASS;
 
-    WeaponLib(Weapon instance) {
-        INSTANCE = instance;
+    WeaponEnum(Weapon instance) {
+        CLASS = instance;
     }
 
     private static final HashMap<Integer,Weapon> configWeaponMap = new HashMap<>();
 
     public static Weapon getWeapon(int customModelData) {
         int rangeID = (customModelData/1000);
-        if(rangeID >= WeaponLib.values().length) {
+        if(rangeID >= WeaponEnum.values().length) {
             return configWeaponMap.get(rangeID);
         }
-        return WeaponLib.values()[rangeID].INSTANCE;
+        return WeaponEnum.values()[rangeID].CLASS;
     }
 
     /**
