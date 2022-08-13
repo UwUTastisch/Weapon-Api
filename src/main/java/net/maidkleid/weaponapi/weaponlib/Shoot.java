@@ -10,7 +10,7 @@ public class Shoot {
     private final Location tickPosition;
     private final Vector velocity;
 
-    public Shoot(WeaponInstance weaponInstance, Location startPosition, Location tickPosition, Vector velocity) {
+    public Shoot(WeaponInstance weaponInstance, Location startPosition, Vector velocity) {
         this.weaponInstance = weaponInstance;
         this.startPosition = startPosition;
         this.tickPosition = startPosition.clone();

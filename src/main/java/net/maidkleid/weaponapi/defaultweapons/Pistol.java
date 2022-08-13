@@ -5,13 +5,14 @@ import net.maidkleid.weaponapi.weaponlib.Shoot;
 import net.maidkleid.weaponapi.weaponlib.Weapon;
 import net.maidkleid.weaponapi.weaponlib.WeaponInstance;
 import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public class Pistol implements Weapon {
 
     @Override
-    public int getMagSize() {
+    public int getMagSize(int level) {
         return 12;
     }
 
@@ -30,6 +31,11 @@ public class Pistol implements Weapon {
         return new PistolInstance(this,player, slot, stack);
     }
 
+    @Override
+    public Sound getShootSound(int level) {
+        return Sound.BLOCK_ANVIL_BREAK;
+    }
+
     public static class PistolInstance extends WeaponInstance {
 
         private PistolInstance(Pistol pistol, Player player, int slot, ItemStack itemStack) {
@@ -46,7 +52,6 @@ public class Pistol implements Weapon {
             Location l = getHandlingPlayer().getEyeLocation();
             return new Shoot(this,
                     l,
-                    l.clone(),
                     l.getDirection().normalize().multiply(20));
         }
 

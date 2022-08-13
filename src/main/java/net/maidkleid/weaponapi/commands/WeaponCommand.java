@@ -2,7 +2,7 @@ package net.maidkleid.weaponapi.commands;
 
 import net.maidkleid.weaponapi.utils.WeaponItemMidLevelUtils;
 import net.maidkleid.weaponapi.weaponlib.Weapon;
-import net.maidkleid.weaponapi.weaponlib.WeaponEnum;
+import net.maidkleid.weaponapi.weaponlib.WeaponProvider;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -13,19 +13,20 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class WeaponCommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         try {
-            WeaponEnum weaponEnum = WeaponEnum.valueOf(args[0]);
-            Weapon w = weaponEnum.CLASS;
+
+            Weapon weapon = WeaponProvider.getWeapon(args[0]);
+            //WeaponEnum weaponEnum = WeaponEnum.valueOf(args[0]);
+            //Weapon w = weaponEnum.CLASS;
             if(sender instanceof Player player) {
                 Location l = player.getLocation();
                 World world = l.getWorld();
-                world.dropItem(l, WeaponItemMidLevelUtils.getWeaponItem(weaponEnum));
+                world.dropItem(l, WeaponItemMidLevelUtils.getWeaponItem(WeaponProvider.getWeaponID(weapon.getName()),0));
             }
         } catch (Exception e) {
             return false;
@@ -36,10 +37,10 @@ public class WeaponCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        ArrayList<String> l = new ArrayList<>();
-        for (WeaponEnum value : WeaponEnum.values()) {
-            l.add(value.name());
-        }
-        return l;
+        //ArrayList<String> l = new ArrayList<>();
+        //for (WeaponEnum value : WeaponEnum.values()) {
+        //    l.add(value.name());
+        //}
+        return WeaponProvider.getAllWeaponNames();
     }
 }

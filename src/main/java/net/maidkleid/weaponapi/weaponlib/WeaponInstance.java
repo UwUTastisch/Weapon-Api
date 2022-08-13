@@ -1,13 +1,14 @@
 package net.maidkleid.weaponapi.weaponlib;
 
 import net.maidkleid.weaponapi.utils.WeaponItemLowLevelUtils;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
-public abstract class WeaponInstance implements Weapon {
+public abstract class WeaponInstance {
 
     protected final Weapon weapon;
     private final Player player;
@@ -73,23 +74,12 @@ public abstract class WeaponInstance implements Weapon {
         }
 
     }
-    @Override
+
     public int getMagSize() {
-        return weapon.getMagSize();
+        return weapon.getMagSize(getXP());
     }
 
-    @Override
-    public String getName() {
-        return weapon.getName();
-    }
-
-    @Override
-    public AmmoType getAmmoType() {
-        return weapon.getAmmoType();
-    }
-
-    @Override
-    public @Nullable WeaponInstance getWeaponInstance(Player player, int slot, ItemStack itemStack) {
-        return weapon.getWeaponInstance(player, slot, itemStack);
+    public Sound getShootSound() {
+        return weapon.getShootSound(getXP());
     }
 }

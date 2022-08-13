@@ -1,6 +1,6 @@
 package net.maidkleid.weaponapi.listeners;
 
-import net.maidkleid.weaponapi.weaponlib.WeaponEnum;
+import net.maidkleid.weaponapi.weaponlib.WeaponProvider;
 import net.maidkleid.weaponapi.weaponlib.WeaponInstance;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -16,10 +16,14 @@ public class OnClickListener implements Listener {
         if(stack == null) return;
         if(!stack.hasItemMeta()) return;
         try {
-            WeaponInstance i = WeaponEnum.
+            WeaponInstance weaponInstance = WeaponProvider.
                     getWeapon(stack.getItemMeta().getCustomModelData()).
-                    getWeaponInstance(event.getPlayer(), event.getPlayer().getInventory().getHeldItemSlot(),stack);
-            i.shoot();
+                    getWeaponInstance(
+                            event.getPlayer(),
+                            event.getPlayer().getInventory().getHeldItemSlot(),
+                            stack
+                    );
+            weaponInstance.shoot();
             System.out.println("Es hat geklappt");
 
         } catch (Exception e) {
