@@ -5,7 +5,7 @@ import net.maidkleid.weaponapi.weaponlib.WeaponLib;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-public class ItemBuilder {
+public class WeaponItemMidLevelUtils {
 
     public static ItemStack getWeaponItem(WeaponLib weaponLib) {
         ItemStack stack = new ItemStack(Material.COAL);

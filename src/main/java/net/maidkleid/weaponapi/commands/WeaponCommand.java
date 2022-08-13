@@ -1,6 +1,6 @@
 package net.maidkleid.weaponapi.commands;
 
-import net.maidkleid.weaponapi.utils.ItemBuilder;
+import net.maidkleid.weaponapi.utils.WeaponItemMidLevelUtils;
 import net.maidkleid.weaponapi.weaponlib.Weapon;
 import net.maidkleid.weaponapi.weaponlib.WeaponLib;
 import org.bukkit.Location;
@@ -25,7 +25,7 @@ public class WeaponCommand implements CommandExecutor, TabCompleter {
             if(sender instanceof Player player) {
                 Location l = player.getLocation();
                 World world = l.getWorld();
-                world.dropItem(l, ItemBuilder.getWeaponItem(weaponLib));
+                world.dropItem(l, WeaponItemMidLevelUtils.getWeaponItem(weaponLib));
             }
         } catch (Exception e) {
             return false;
