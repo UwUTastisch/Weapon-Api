@@ -39,11 +39,6 @@ public class Pistol implements Weapon {
         return Sound.BLOCK_ANVIL_BREAK;
     }
 
-    @Override
-    public LevelMapper getLevelMapper() {
-        return WeaponItemMidLevelUtils.getDefaultLevelMapper();
-    }
-
     public static class PistolInstance extends WeaponInstance {
 
         private PistolInstance(Pistol pistol, Player player, int slot, ItemStack itemStack) {
