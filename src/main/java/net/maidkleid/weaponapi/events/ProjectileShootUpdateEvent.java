@@ -23,4 +23,8 @@ public class ProjectileShootUpdateEvent extends Event {
         return projectileShoot;
     }
 
+    public static HandlerList getHandlerList() {
+        return HANDLERS_LIST;
+    }
+
 }

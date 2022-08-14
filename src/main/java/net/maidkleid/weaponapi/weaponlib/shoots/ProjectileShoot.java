@@ -6,7 +6,10 @@ import net.maidkleid.weaponapi.events.ProjectileShootUpdateEvent;
 import net.maidkleid.weaponapi.utils.ProjectileUtils;
 import net.maidkleid.weaponapi.weaponlib.WeaponInstance;
 import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Projectile;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.Nullable;
@@ -33,8 +36,14 @@ public class ProjectileShoot<T extends Projectile> extends Shoot {
     }
 
     @Override
-    protected void doUpdateTick() {
-        tickPosition = (projectile.getLocation());
+    protected boolean doUpdateTick() {
+        Location location = projectile.getLocation();
+        if(location.equals(tickPosition)) {
+            projectile.remove();
+            return false;
+        }
+        tickPosition = location;
+        return true;
     }
 
     //-------------------STATIC---------------------
@@ -55,12 +64,15 @@ public class ProjectileShoot<T extends Projectile> extends Shoot {
         projectileList.removeIf(p -> {
             try {
                 UUID shootUUID = ProjectileUtils.getUUID(p);
-                if (p.isDead() || !p.isValid() || !p.isEmpty()) {
+                Location location = p.getLocation();
+                if(hasUnloadedNeighbourChunk(p.getChunk()) || location.getY()>= 400) p.remove();
+                if(p instanceof Arrow arrow) if(arrow.isInBlock()) arrow.remove();
+                if (p.isDead() || !p.isValid()) {
                     shootHashMap.remove(shootUUID);
                     return true;
                 } else {
                     ProjectileShoot<?> projectileShoot = shootHashMap.get(shootUUID);
-                    projectileShoot.doUpdateTick();
+                    if(!projectileShoot.doUpdateTick()) return true;
                     Bukkit.getPluginManager().callEvent(new ProjectileShootUpdateEvent(projectileShoot));
                 }
             } catch (Exception e) {
@@ -69,6 +81,17 @@ public class ProjectileShoot<T extends Projectile> extends Shoot {
             }
             return false;
         });
+    }
+
+    private static boolean hasUnloadedNeighbourChunk(Chunk chunk) {
+        World world = chunk.getWorld();
+        int x = chunk.getX();
+        int z = chunk.getZ();
+        return (!chunk.isLoaded()
+                || !world.getChunkAt(x,z+2).isEntitiesLoaded()
+                || !world.getChunkAt(x,z-2).isEntitiesLoaded()
+                || !world.getChunkAt(x+2,z).isEntitiesLoaded()
+                || !world.getChunkAt(x-2,z).isEntitiesLoaded());
     }
 
     private static @Nullable Shoot getShootForProjectile(Projectile projectile) {

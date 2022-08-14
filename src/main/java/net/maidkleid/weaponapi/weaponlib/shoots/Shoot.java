@@ -30,6 +30,6 @@ public abstract class Shoot {
         return velocity.clone();
     }
 
-    abstract protected void doUpdateTick() ;
+    abstract protected boolean doUpdateTick() ;
 
 }
