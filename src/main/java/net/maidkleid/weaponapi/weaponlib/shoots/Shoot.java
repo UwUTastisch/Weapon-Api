@@ -1,14 +1,15 @@
-package net.maidkleid.weaponapi.weaponlib;
+package net.maidkleid.weaponapi.weaponlib.shoots;
 
+import net.maidkleid.weaponapi.weaponlib.WeaponInstance;
 import org.bukkit.Location;
 import org.bukkit.util.Vector;
 
-public class Shoot {
+public abstract class Shoot {
 
     public final WeaponInstance weaponInstance;
-    private final Location startPosition;
-    private final Location tickPosition;
-    private final Vector velocity;
+    protected final Location startPosition;
+    protected Location tickPosition;
+    protected final Vector velocity;
 
     public Shoot(WeaponInstance weaponInstance, Location startPosition, Vector velocity) {
         this.weaponInstance = weaponInstance;
@@ -28,5 +29,7 @@ public class Shoot {
     public Vector getVelocity() {
         return velocity.clone();
     }
+
+    abstract protected void doUpdateTick() ;
 
 }

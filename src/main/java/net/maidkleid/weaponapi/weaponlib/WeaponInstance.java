@@ -1,10 +1,10 @@
 package net.maidkleid.weaponapi.weaponlib;
 
 import net.maidkleid.weaponapi.utils.WeaponItemLowLevelUtils;
+import net.maidkleid.weaponapi.weaponlib.shoots.Shoot;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
@@ -81,5 +81,9 @@ public abstract class WeaponInstance {
 
     public Sound getShootSound() {
         return weapon.getShootSound(getXP());
+    }
+
+    public UUID getUUID() {
+        return WeaponItemLowLevelUtils.getUUID(itemStack.getItemMeta());
     }
 }

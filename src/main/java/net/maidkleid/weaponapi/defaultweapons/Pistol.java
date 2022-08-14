@@ -1,11 +1,12 @@
 package net.maidkleid.weaponapi.defaultweapons;
 
 import net.maidkleid.weaponapi.weaponlib.AmmoType;
-import net.maidkleid.weaponapi.weaponlib.Shoot;
 import net.maidkleid.weaponapi.weaponlib.Weapon;
 import net.maidkleid.weaponapi.weaponlib.WeaponInstance;
+import net.maidkleid.weaponapi.weaponlib.shoots.ProjectileShoot;
 import org.bukkit.Location;
 import org.bukkit.Sound;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -48,11 +49,11 @@ public class Pistol implements Weapon {
         }
 
         @Override
-        public Shoot shoot() {
+        public ProjectileShoot<Arrow> shoot() {
             Location l = getHandlingPlayer().getEyeLocation();
-            return new Shoot(this,
+            return ProjectileShoot.shootWeapon(this,
                     l,
-                    l.getDirection().normalize().multiply(20));
+                    l.getDirection().normalize().multiply(20), Arrow.class);
         }
 
         @Override
