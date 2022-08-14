@@ -1,10 +1,12 @@
 package net.maidkleid.weaponapi.weaponlib;
 
+import net.maidkleid.weaponapi.utils.LevelMapper;
 import net.maidkleid.weaponapi.utils.WeaponItemLowLevelUtils;
 import net.maidkleid.weaponapi.weaponlib.shoots.Shoot;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
@@ -53,15 +55,20 @@ public abstract class WeaponInstance {
         return WeaponItemLowLevelUtils.getWeaponXP(itemStack.getItemMeta());
     }
 
+    public int getLevel() {
+        return weapon.getLevelMapper().getLevel(getXP());
+    }
+
     public Player getHandlingPlayer() {
         return player;
     }
 
-    public abstract Shoot shoot();
+    public abstract @Nullable Shoot doShoot();
 
     public abstract boolean tryReload();
 
     protected ItemStack returnUpdatedItemStack() {
+
         return itemStack;
     }
 
@@ -78,11 +85,11 @@ public abstract class WeaponInstance {
     }
 
     public int getMagSize() {
-        return weapon.getMagSize(getXP());
+        return weapon.getMagSize(getLevel());
     }
 
     public Sound getShootSound() {
-        return weapon.getShootSound(getXP());
+        return weapon.getShootSound(getLevel());
     }
 
     public UUID getUUID() {

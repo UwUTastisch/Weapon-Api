@@ -5,7 +5,11 @@ import net.maidkleid.weaponapi.weaponlib.WeaponProvider;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.List;
+
 public class WeaponItemMidLevelUtils {
+
+
 
     public static ItemStack getWeaponItem(int customModelData, int level) {
         ItemStack stack = new ItemStack(Material.GLASS);
@@ -20,5 +24,4 @@ public class WeaponItemMidLevelUtils {
         System.out.println("Gen new Weapon: " + stack);
         return stack;
     }
-
 }

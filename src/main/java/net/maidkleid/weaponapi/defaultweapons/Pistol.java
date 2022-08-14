@@ -1,5 +1,7 @@
 package net.maidkleid.weaponapi.defaultweapons;
 
+import net.maidkleid.weaponapi.utils.LevelMapper;
+import net.maidkleid.weaponapi.utils.WeaponItemMidLevelUtils;
 import net.maidkleid.weaponapi.weaponlib.AmmoType;
 import net.maidkleid.weaponapi.weaponlib.Weapon;
 import net.maidkleid.weaponapi.weaponlib.WeaponInstance;
@@ -37,6 +39,11 @@ public class Pistol implements Weapon {
         return Sound.BLOCK_ANVIL_BREAK;
     }
 
+    @Override
+    public LevelMapper getLevelMapper() {
+        return WeaponItemMidLevelUtils.getDefaultLevelMapper();
+    }
+
     public static class PistolInstance extends WeaponInstance {
 
         private PistolInstance(Pistol pistol, Player player, int slot, ItemStack itemStack) {
@@ -49,7 +56,7 @@ public class Pistol implements Weapon {
         }
 
         @Override
-        public ProjectileShoot<Arrow> shoot() {
+        public ProjectileShoot<Arrow> doShoot() {
             Location l = getHandlingPlayer().getEyeLocation();
             return ProjectileShoot.shootWeapon(this,
                     l,

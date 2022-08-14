@@ -23,9 +23,7 @@ public class OnClickListener implements Listener {
                             event.getPlayer().getInventory().getHeldItemSlot(),
                             stack
                     );
-            weaponInstance.shoot();
-            System.out.println("Es hat geklappt");
-
+            weaponInstance.doShoot();
         } catch (Exception e) {
             e.printStackTrace();
             return;
