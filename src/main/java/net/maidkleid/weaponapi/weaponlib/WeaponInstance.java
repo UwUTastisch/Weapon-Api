@@ -61,7 +61,9 @@ public abstract class WeaponInstance {
 
     public abstract boolean tryReload();
 
-    protected abstract ItemStack returnUpdatedItemStack();
+    protected ItemStack returnUpdatedItemStack() {
+        return itemStack;
+    }
 
     public boolean isStillInSlot() {
         ItemStack stack = player.getInventory().getStorageContents()[slot];

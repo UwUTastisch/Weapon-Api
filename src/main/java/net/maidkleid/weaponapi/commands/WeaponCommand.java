@@ -19,16 +19,18 @@ public class WeaponCommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         try {
-
             Weapon weapon = WeaponProvider.getWeapon(args[0]);
+            //sender.sendMessage("Weapon: " + weapon);
             //WeaponEnum weaponEnum = WeaponEnum.valueOf(args[0]);
             //Weapon w = weaponEnum.CLASS;
             if(sender instanceof Player player) {
                 Location l = player.getLocation();
                 World world = l.getWorld();
-                world.dropItem(l, WeaponItemMidLevelUtils.getWeaponItem(WeaponProvider.getWeaponID(weapon.getName()),0));
+                int weaponID = WeaponProvider.getWeaponID(weapon.getName());
+                world.dropItem(l, WeaponItemMidLevelUtils.getWeaponItem(WeaponProvider.getLowestCustomModelDataID(weaponID),0));
             }
         } catch (Exception e) {
+            e.printStackTrace();
             return false;
         }
 

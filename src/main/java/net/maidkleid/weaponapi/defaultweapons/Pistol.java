@@ -61,11 +61,6 @@ public class Pistol implements Weapon {
             return false;
         }
 
-        @Override
-        protected ItemStack returnUpdatedItemStack() {
-            return itemStack;
-        }
-
     }
 
 
