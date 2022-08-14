@@ -102,10 +102,13 @@ public class ProjectileShoot<T extends Projectile> extends Shoot {
 
     public static <T extends Projectile> @Nullable ProjectileShoot<T> shootWeapon(WeaponInstance weaponInstance, Location startPosition, Vector velocity, Class<T> projectileClass) {
         ProjectileShoot<T> shoot = new ProjectileShoot<>(weaponInstance, startPosition, velocity, projectileClass);
+        Projectile p = shoot.launch();
         ProjectileShootLaunchEvent event = new ProjectileShootLaunchEvent(shoot);
         Bukkit.getPluginManager().callEvent(event);
-        if(!event.isCancelled()) return null;
-        Projectile p = shoot.launch();
+        if(!event.isCancelled()) {
+            p.remove();
+            return null;
+        }
         p.setGlowing(true);
         p.setVelocity(velocity);
         p.setSilent(true);
