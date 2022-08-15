@@ -9,19 +9,19 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
-public class ProjectileShootDamageEvent extends EntityDamageEvent {
+public class ProjectileShootDamageEvent extends EntityDamageEvent implements ProjectileShootProvider {
 
-    ProjectileShoot<?> shoot;
+    private final ProjectileShoot<?> projectileShoot;
     private static final HandlerList HANDLERS_LIST = new HandlerList();
 
-    public ProjectileShootDamageEvent(@NotNull Entity damagee, ProjectileShoot<?> shoot) {
-        super(damagee, DamageCause.PROJECTILE, shoot.weaponInstance.getBulletDamage());
-        this.shoot = shoot;
+    public ProjectileShootDamageEvent(@NotNull Entity damagee, ProjectileShoot<?> projectileShoot) {
+        super(damagee, DamageCause.PROJECTILE, projectileShoot.getWeaponInstance().getBulletDamage());
+        this.projectileShoot = projectileShoot;
     }
 
-    public ProjectileShootDamageEvent(@NotNull Entity damagee, @NotNull Map<DamageModifier, Double> modifiers, @NotNull Map<DamageModifier, ? extends Function<? super Double, Double>> modifierFunctions, ProjectileShoot<?> shoot) {
+    public ProjectileShootDamageEvent(@NotNull Entity damagee, @NotNull Map<DamageModifier, Double> modifiers, @NotNull Map<DamageModifier, ? extends Function<? super Double, Double>> modifierFunctions, ProjectileShoot<?> projectileShoot) {
         super(damagee, DamageCause.PROJECTILE, modifiers, modifierFunctions);
-        this.shoot = shoot;
+        this.projectileShoot = projectileShoot;
     }
 
     @Override
@@ -33,4 +33,8 @@ public class ProjectileShootDamageEvent extends EntityDamageEvent {
         return HANDLERS_LIST;
     }
 
+    @Override
+    public ProjectileShoot<?> getProjectile() {
+        return projectileShoot;
+    }
 }

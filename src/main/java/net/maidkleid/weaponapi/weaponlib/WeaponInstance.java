@@ -102,4 +102,15 @@ public abstract class WeaponInstance {
     public double getBulletHeadShotDamage() {
         return weapon.getBulletHeadShotDamage(getLevel());
     }
+
+    @Override
+    public String toString() {
+        return "WeaponInstance{" +
+                "weapon=" + weapon +
+                ", player=" + player +
+                ", itemStack=" + itemStack +
+                ", slot=" + slot +
+                ", weaponUUID=" + weaponUUID +
+                '}';
+    }
 }

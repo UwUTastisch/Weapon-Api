@@ -7,11 +7,10 @@ import org.bukkit.util.Vector;
 
 public abstract class Shoot {
 
-    public final WeaponInstance weaponInstance;
+    protected final WeaponInstance weaponInstance;
     protected final Location startPosition;
     protected Location tickPosition;
     protected final Vector velocity;
-
     public Shoot(WeaponInstance weaponInstance, Location startPosition, Vector velocity) {
         this.weaponInstance = weaponInstance;
         this.startPosition = startPosition;
@@ -32,6 +31,10 @@ public abstract class Shoot {
     }
 
     abstract protected boolean doUpdateTick() ;
+
+    public WeaponInstance getWeaponInstance() {
+        return weaponInstance;
+    }
 
     public void callHitEvent(ProjectileHitEvent event) {
 

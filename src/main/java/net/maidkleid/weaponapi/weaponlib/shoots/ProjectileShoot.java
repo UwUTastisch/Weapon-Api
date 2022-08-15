@@ -1,13 +1,16 @@
 package net.maidkleid.weaponapi.weaponlib.shoots;
 
 import net.maidkleid.weaponapi.WeaponAPI;
+import net.maidkleid.weaponapi.events.ProjectileShootDamageEvent;
+import net.maidkleid.weaponapi.events.ProjectileShootHitEvent;
 import net.maidkleid.weaponapi.events.ProjectileShootLaunchEvent;
 import net.maidkleid.weaponapi.events.ProjectileShootUpdateEvent;
 import net.maidkleid.weaponapi.utils.ProjectileUtils;
 import net.maidkleid.weaponapi.weaponlib.WeaponInstance;
 import org.bukkit.*;
 import org.bukkit.entity.Arrow;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.util.Vector;
@@ -126,7 +129,32 @@ public class ProjectileShoot<T extends Projectile> extends Shoot {
     }
 
 
-    public void callEntityHitEvent(ProjectileHitEvent event) {
+    public void callHitEvent(ProjectileHitEvent event) {
+        ProjectileShootHitEvent newEvent = null;
+        if(event.getHitEntity() != null && event.getHitBlock() != null) {
+            newEvent = new ProjectileShootHitEvent(this, event.getHitEntity(), event.getHitBlock(), event.getHitBlockFace());
+        } else if(event.getHitEntity() != null) {
+            newEvent = new ProjectileShootHitEvent(this, event.getHitEntity());
+        } else if(event.getHitBlock() != null) {
+            newEvent = new ProjectileShootHitEvent(this, event.getHitBlock());
+        }
+        if(newEvent == null) return;
+        if(!newEvent.callEvent()) {
+            event.setCancelled(false);
+            return;
+        }
+        event.setCancelled(true);
+        event.getEntity().remove();
+        if(event.getHitEntity() == null) return;
+        ProjectileShootDamageEvent damageEvent = new ProjectileShootDamageEvent(event.getHitEntity(),this);
+        if(!(event.getHitEntity() instanceof LivingEntity livingEntity)) {
+            return;
+        }
+        if(damageEvent.callEvent()) {
+            livingEntity.damage(damageEvent.getFinalDamage());
+            livingEntity.setLastDamageCause(damageEvent);
+            livingEntity.setNoDamageTicks(0);
+        }
 
     }
 }

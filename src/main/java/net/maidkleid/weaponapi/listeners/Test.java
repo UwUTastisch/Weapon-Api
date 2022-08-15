@@ -1,5 +1,7 @@
 package net.maidkleid.weaponapi.listeners;
 
+import net.maidkleid.weaponapi.events.ProjectileShootDamageEvent;
+import net.maidkleid.weaponapi.events.ProjectileShootHitEvent;
 import net.maidkleid.weaponapi.events.ProjectileShootLaunchEvent;
 import net.maidkleid.weaponapi.events.ProjectileShootUpdateEvent;
 import org.bukkit.event.EventHandler;
@@ -28,6 +30,16 @@ public class Test implements Listener {
         System.out.println("Update: " + projectileShoot.weaponInstance.getWeapon().getName() + " " + projectileShoot.getProjectile().getChunk());
 
          */
+    }
+
+    @EventHandler
+    public void test3(ProjectileShootHitEvent event) {
+        //System.out.println( "HitEvent : " + event.getProjectile().getWeaponInstance());
+    }
+
+    @EventHandler
+    public void test3(ProjectileShootDamageEvent event) {
+        //System.out.println( "DamageEvent: " + event.getDamage() + event.getProjectile());
     }
 
 

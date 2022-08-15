@@ -2,6 +2,7 @@ package net.maidkleid.weaponapi;
 
 import net.maidkleid.weaponapi.commands.WeaponCommand;
 import net.maidkleid.weaponapi.listeners.OnClickListener;
+import net.maidkleid.weaponapi.listeners.ProjectileHitListener;
 import net.maidkleid.weaponapi.listeners.Test;
 import net.maidkleid.weaponapi.utils.ProjectileUtils;
 import net.maidkleid.weaponapi.weaponlib.shoots.ProjectileShoot;
@@ -15,6 +16,7 @@ public final class WeaponAPI extends JavaPlugin {
     @Override
     public void onEnable() {
         Bukkit.getPluginManager().registerEvents(new OnClickListener(), this);
+        Bukkit.getPluginManager().registerEvents(new ProjectileHitListener(), this);
         Bukkit.getPluginManager().registerEvents(new Test(), this);
         Objects.requireNonNull(getCommand("weapon")).setExecutor(new WeaponCommand());
         ProjectileShoot.reload(this);
