@@ -144,16 +144,18 @@ public class ProjectileShoot<T extends Projectile> extends Shoot {
             return;
         }
         event.setCancelled(true);
-        event.getEntity().remove();
+        Projectile entity = event.getEntity();
+        entity.remove();
         if(event.getHitEntity() == null) return;
         ProjectileShootDamageEvent damageEvent = new ProjectileShootDamageEvent(event.getHitEntity(),this);
         if(!(event.getHitEntity() instanceof LivingEntity livingEntity)) {
             return;
         }
         if(damageEvent.callEvent()) {
-            livingEntity.setNoDamageTicks(0);
+            livingEntity.setNoDamageTicks(0);;
             livingEntity.damage(damageEvent.getFinalDamage());
             livingEntity.setLastDamageCause(damageEvent);
+            livingEntity.setVelocity(livingEntity.getVelocity().add(damageEvent.getKnockBack()));
         }
 
     }

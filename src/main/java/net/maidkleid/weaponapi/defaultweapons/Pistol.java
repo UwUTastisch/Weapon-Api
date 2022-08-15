@@ -10,8 +10,12 @@ import net.maidkleid.weaponapi.weaponlib.shoots.ProjectileShoot;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Arrow;
+import org.bukkit.entity.Fireball;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Snowball;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.Vector;
 
 public class Pistol implements Weapon {
 
@@ -45,10 +49,10 @@ public class Pistol implements Weapon {
         return 3;
     }
 
-    public static class PistolInstance extends ProjectileWeaponInstance<Arrow> {
+    public static class PistolInstance extends ProjectileWeaponInstance<Snowball> {
 
         private PistolInstance(Pistol pistol, Player player, int slot, ItemStack itemStack) {
-            super(pistol, player, slot, itemStack,Arrow.class);
+            super(pistol, player, slot, itemStack, Snowball.class, 3.d);
         }
 
         @Override
