@@ -151,9 +151,9 @@ public class ProjectileShoot<T extends Projectile> extends Shoot {
             return;
         }
         if(damageEvent.callEvent()) {
+            livingEntity.setNoDamageTicks(0);
             livingEntity.damage(damageEvent.getFinalDamage());
             livingEntity.setLastDamageCause(damageEvent);
-            livingEntity.setNoDamageTicks(0);
         }
 
     }
