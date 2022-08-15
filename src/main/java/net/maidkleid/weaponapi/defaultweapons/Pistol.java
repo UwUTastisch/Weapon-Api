@@ -3,6 +3,7 @@ package net.maidkleid.weaponapi.defaultweapons;
 import net.maidkleid.weaponapi.utils.LevelMapper;
 import net.maidkleid.weaponapi.utils.WeaponItemMidLevelUtils;
 import net.maidkleid.weaponapi.weaponlib.AmmoType;
+import net.maidkleid.weaponapi.weaponlib.ProjectileWeaponInstance;
 import net.maidkleid.weaponapi.weaponlib.Weapon;
 import net.maidkleid.weaponapi.weaponlib.WeaponInstance;
 import net.maidkleid.weaponapi.weaponlib.shoots.ProjectileShoot;
@@ -44,23 +45,10 @@ public class Pistol implements Weapon {
         return 3;
     }
 
-    public static class PistolInstance extends WeaponInstance {
+    public static class PistolInstance extends ProjectileWeaponInstance<Arrow> {
 
         private PistolInstance(Pistol pistol, Player player, int slot, ItemStack itemStack) {
-            super(pistol, player, slot, itemStack);
-        }
-
-        @Override
-        public int getCurrentAmmo() {
-            return 0;
-        }
-
-        @Override
-        public ProjectileShoot<Arrow> doShoot() {
-            Location l = getHandlingPlayer().getEyeLocation();
-            return ProjectileShoot.shootWeapon(this,
-                    l,
-                    l.getDirection().normalize().multiply(20), Arrow.class);
+            super(pistol, player, slot, itemStack,Arrow.class);
         }
 
         @Override
