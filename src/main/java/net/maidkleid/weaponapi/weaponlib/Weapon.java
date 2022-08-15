@@ -5,8 +5,6 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.List;
-
 public interface Weapon {
 
 
@@ -24,4 +22,9 @@ public interface Weapon {
         return LevelMapper.DEFAULT_MAPPER;
     }
 
+    double getBulletDamage(int level);
+
+    default double getBulletHeadShotDamage(int level) {
+        return getBulletDamage(level)*1.4d;
+    }
 }

@@ -1,6 +1,5 @@
 package net.maidkleid.weaponapi.weaponlib;
 
-import net.maidkleid.weaponapi.utils.LevelMapper;
 import net.maidkleid.weaponapi.utils.WeaponItemLowLevelUtils;
 import net.maidkleid.weaponapi.weaponlib.shoots.Shoot;
 import org.bukkit.Sound;
@@ -94,5 +93,13 @@ public abstract class WeaponInstance {
 
     public UUID getUUID() {
         return WeaponItemLowLevelUtils.getUUID(itemStack.getItemMeta());
+    }
+
+    public double getBulletDamage() {
+        return weapon.getBulletDamage(getLevel());
+    }
+
+    public double getBulletHeadShotDamage() {
+        return weapon.getBulletHeadShotDamage(getLevel());
     }
 }

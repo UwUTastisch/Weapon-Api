@@ -1,15 +1,9 @@
 package net.maidkleid.weaponapi.listeners;
 
-import net.maidkleid.weaponapi.events.ProjectileShootEvent;
 import net.maidkleid.weaponapi.events.ProjectileShootLaunchEvent;
 import net.maidkleid.weaponapi.events.ProjectileShootUpdateEvent;
-import net.maidkleid.weaponapi.weaponlib.shoots.ProjectileShoot;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerEvent;
-import org.jetbrains.annotations.NotNull;
 
 public class Test implements Listener {
 

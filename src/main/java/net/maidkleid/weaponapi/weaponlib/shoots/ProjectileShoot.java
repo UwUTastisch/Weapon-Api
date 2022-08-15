@@ -5,12 +5,11 @@ import net.maidkleid.weaponapi.events.ProjectileShootLaunchEvent;
 import net.maidkleid.weaponapi.events.ProjectileShootUpdateEvent;
 import net.maidkleid.weaponapi.utils.ProjectileUtils;
 import net.maidkleid.weaponapi.weaponlib.WeaponInstance;
-import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
-import org.bukkit.Location;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.entity.Arrow;
+import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
+import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.Nullable;
 
@@ -31,7 +30,7 @@ public class ProjectileShoot<T extends Projectile> extends Shoot {
 
     private T launch() {
         projectile = weaponInstance.getHandlingPlayer().launchProjectile(projectileClass);
-        System.out.println("Projectile launched!");
+        //System.out.println("Projectile launched!" + projectile);
         return projectile;
     }
 
@@ -45,6 +44,8 @@ public class ProjectileShoot<T extends Projectile> extends Shoot {
         tickPosition = location;
         return true;
     }
+
+
 
     //-------------------STATIC---------------------
 
@@ -94,7 +95,7 @@ public class ProjectileShoot<T extends Projectile> extends Shoot {
                 || !world.getChunkAt(x-2,z).isEntitiesLoaded());
     }
 
-    private static @Nullable Shoot getShootForProjectile(Projectile projectile) {
+    public static @Nullable ProjectileShoot<?> getShootForProjectile(Projectile projectile) {
         if(!projectileList.contains(projectile)) return null;
         UUID uuid = ProjectileUtils.getUUID(projectile);
         return shootHashMap.get(uuid);
@@ -105,10 +106,16 @@ public class ProjectileShoot<T extends Projectile> extends Shoot {
         Projectile p = shoot.launch();
         ProjectileShootLaunchEvent event = new ProjectileShootLaunchEvent(shoot);
         Bukkit.getPluginManager().callEvent(event);
-        if(!event.isCancelled()) {
+        if(event.isCancelled()) {
             p.remove();
             return null;
         }
+        //;
+        //for (Player nearbyPlayer : startPosition.getNearbyPlayers(30)) {
+        startPosition.getWorld().playSound(startPosition,weaponInstance.getShootSound(),1,1);
+            //startPosition.playSound(nearbyPlayer,weaponInstance.getShootSound(),1,1);
+        //}
+
         p.setGlowing(true);
         p.setVelocity(velocity);
         p.setSilent(true);
@@ -119,5 +126,7 @@ public class ProjectileShoot<T extends Projectile> extends Shoot {
     }
 
 
+    public void callEntityHitEvent(ProjectileHitEvent event) {
 
+    }
 }

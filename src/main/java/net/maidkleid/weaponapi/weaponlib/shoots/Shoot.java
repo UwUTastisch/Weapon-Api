@@ -2,6 +2,7 @@ package net.maidkleid.weaponapi.weaponlib.shoots;
 
 import net.maidkleid.weaponapi.weaponlib.WeaponInstance;
 import org.bukkit.Location;
+import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.util.Vector;
 
 public abstract class Shoot {
@@ -32,4 +33,7 @@ public abstract class Shoot {
 
     abstract protected boolean doUpdateTick() ;
 
+    public void callHitEvent(ProjectileHitEvent event) {
+
+    }
 }
