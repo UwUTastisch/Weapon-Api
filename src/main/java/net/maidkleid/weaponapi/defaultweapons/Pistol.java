@@ -35,8 +35,8 @@ public class Pistol implements Weapon {
     }
 
     @Override
-    public PistolInstance getWeaponInstance(Player player, int slot, ItemStack stack) {
-        return new PistolInstance(this,player, slot, stack);
+    public ProjectileWeaponInstance<Snowball> getWeaponNewInstance(Player player, int slot, ItemStack stack) {
+        return new ProjectileWeaponInstance<>(this, player, slot, stack, Snowball.class, 3.d);
     }
 
     @Override
@@ -49,18 +49,14 @@ public class Pistol implements Weapon {
         return 3;
     }
 
-    public static class PistolInstance extends ProjectileWeaponInstance<Snowball> {
-
-        private PistolInstance(Pistol pistol, Player player, int slot, ItemStack itemStack) {
-            super(pistol, player, slot, itemStack, Snowball.class, 3.d);
-        }
-
-        @Override
-        public boolean tryReload() {
-            return false;
-        }
-
+    @Override
+    public long getReloadMagazineTime(int level) {
+        return 5000;
     }
 
+    @Override
+    public long getReloadTime(int level) {
+        return 300;
+    }
 
 }

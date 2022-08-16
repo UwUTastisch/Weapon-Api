@@ -17,7 +17,7 @@ public final class WeaponAPI extends JavaPlugin {
     public void onEnable() {
         Bukkit.getPluginManager().registerEvents(new OnClickListener(), this);
         Bukkit.getPluginManager().registerEvents(new ProjectileHitListener(), this);
-        Bukkit.getPluginManager().registerEvents(new Test(), this);
+        //Bukkit.getPluginManager().registerEvents(new Test(), this);
         Objects.requireNonNull(getCommand("weapon")).setExecutor(new WeaponCommand());
         ProjectileShoot.reload(this);
         // Plugin startup logic

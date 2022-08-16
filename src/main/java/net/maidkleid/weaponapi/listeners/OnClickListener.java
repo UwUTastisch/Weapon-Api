@@ -2,6 +2,7 @@ package net.maidkleid.weaponapi.listeners;
 
 import net.maidkleid.weaponapi.weaponlib.WeaponProvider;
 import net.maidkleid.weaponapi.weaponlib.WeaponInstance;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -15,14 +16,12 @@ public class OnClickListener implements Listener {
         ItemStack stack = event.getItem();
         if(stack == null) return;
         if(!stack.hasItemMeta()) return;
+        Player player = event.getPlayer();
         try {
-            WeaponInstance weaponInstance = WeaponProvider.
-                    getWeapon(stack.getItemMeta().getCustomModelData()).
-                    getWeaponInstance(
-                            event.getPlayer(),
-                            event.getPlayer().getInventory().getHeldItemSlot(),
-                            stack
-                    );
+            WeaponInstance weaponInstance = WeaponProvider.getWeaponInstance(
+                    stack,
+                    player,
+                    player.getInventory().getHeldItemSlot());
             weaponInstance.doShoot();
         } catch (Exception e) {
             e.printStackTrace();

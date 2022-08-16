@@ -1,7 +1,10 @@
 package net.maidkleid.weaponapi.weaponlib;
 
+import net.kyori.adventure.text.Component;
+import net.maidkleid.weaponapi.WeaponAPI;
 import net.maidkleid.weaponapi.utils.WeaponItemLowLevelUtils;
 import net.maidkleid.weaponapi.weaponlib.shoots.Shoot;
+import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -12,12 +15,14 @@ import java.util.UUID;
 public abstract class WeaponInstance {
 
     protected final Weapon weapon;
-    private final Player player;
+    Player player;
     protected ItemStack itemStack;
 
     protected int slot;
     protected final UUID weaponUUID;
-
+    protected boolean isMagReloading = false;
+    private int reloadingMagTask;
+    protected long reloadMagStart;
 
     protected WeaponInstance(Weapon weapon, Player player, int slot , ItemStack itemStack) {
         this.weapon = weapon;
@@ -41,7 +46,6 @@ public abstract class WeaponInstance {
             return magsize;
         }
     }
-
     public Weapon getWeapon() {
         return weapon;
     }
@@ -58,29 +62,81 @@ public abstract class WeaponInstance {
         return weapon.getLevelMapper().getLevel(getXP());
     }
 
+    public long getLeftReloadMagazineTime() {
+        return weapon.getReloadMagazineTime(getLevel()) + reloadMagStart - System.currentTimeMillis();
+    }
+
+    public long getLeftReloadTime() {
+        return weapon.getReloadTime(getLevel()) + reloadMagStart - System.currentTimeMillis();
+    }
+
     public Player getHandlingPlayer() {
         return player;
     }
 
     public abstract @Nullable Shoot doShoot();
 
-    public abstract boolean tryReload();
+    public int tryStartReload() {
+        isMagReloading = true;
+        if(reloadingMagTask != 0) {
+            return reloadingMagTask;
+        }
+        reloadMagStart = System.currentTimeMillis();
+        reloadingMagTask = Bukkit.getScheduler().scheduleSyncRepeatingTask(WeaponAPI.getPlugin(WeaponAPI.class),() -> {
+            long leftReloadTime = getLeftReloadMagazineTime();
+            boolean inHand = isInHand();
+            if(inHand && leftReloadTime > 0) player.sendActionBar(Component.text("Is Reloading " + leftReloadTime));//sendMessage("Is Reloading");
+            else if (inHand) reloadInstant();
+            else breakReloading();
+        }, 0 ,1);
+        return reloadingMagTask;
+    }
+
+    protected void breakReloading() {
+        isMagReloading = false;
+        reloadMagStart = 0;
+        Bukkit.getScheduler().cancelTask(reloadingMagTask);
+        reloadingMagTask = 0;
+    }
+
+    public void reloadInstant() {
+        player.sendActionBar(Component.text("Weapon has been Reloaded"));;
+        breakReloading();
+        setCurrentAmmo(weapon.getMagSize(getLevel()));
+    }
+
+    protected void setCurrentAmmo(int size) {
+        itemStack.editMeta(itemMeta -> {
+            itemMeta.setDisplayName( "Ammo: " + size);
+            WeaponItemLowLevelUtils.setAmmoTo(itemMeta,size);
+        });
+    }
 
     protected ItemStack returnUpdatedItemStack() {
-
-        return itemStack;
+        return itemStack.clone();
     }
 
     public boolean isStillInSlot() {
         ItemStack stack = player.getInventory().getStorageContents()[slot];
+        return compareWeaponUUID(stack);
+    }
+
+    protected boolean isInHand() {
+        return compareWeaponUUID(player.getItemInHand());
+    }
+
+    private boolean compareWeaponUUID(ItemStack stack) {
         try {
-            return weaponUUID.equals(
-                    WeaponItemLowLevelUtils.getUUID(stack.getItemMeta())
-            );
+            return weaponUUID.equals(WeaponItemLowLevelUtils.getUUID(stack.getItemMeta()));
         } catch (Exception e) {
             return false;
         }
+    }
 
+    public boolean tryUpdateStack() {
+        boolean stillInSlot = isStillInSlot();
+        if(stillInSlot) player.setItemInHand(itemStack);
+        return stillInSlot;
     }
 
     public int getMagSize() {
@@ -111,6 +167,9 @@ public abstract class WeaponInstance {
                 ", itemStack=" + itemStack +
                 ", slot=" + slot +
                 ", weaponUUID=" + weaponUUID +
+                ", isReloading=" + isMagReloading +
+                ", reloadingTask=" + reloadingMagTask +
+                ", reloadStart=" + reloadMagStart +
                 '}';
     }
 }

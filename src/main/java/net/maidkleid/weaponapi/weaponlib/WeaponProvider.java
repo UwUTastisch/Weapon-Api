@@ -1,14 +1,19 @@
 package net.maidkleid.weaponapi.weaponlib;
 
 import net.maidkleid.weaponapi.defaultweapons.Pistol;
+import net.maidkleid.weaponapi.utils.WeaponItemLowLevelUtils;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 public class WeaponProvider {
     private static final HashMap<Integer,Weapon> configWeaponMap = new HashMap<>();
     private static final HashMap<String,Integer> configNameWeaponMap = new HashMap<>();
+    private static final HashMap<UUID,WeaponInstance> weaponInstanceMap = new HashMap<>();
 
     public static final Pistol PISTOL = addConfigWeapon(new Pistol(), 0);
 
@@ -55,5 +60,28 @@ public class WeaponProvider {
     }
 
 
+    public static WeaponInstance getWeaponInstance(ItemStack stack, Player player, int slot) {
+        UUID uuid;
+        try {
+            uuid = WeaponItemLowLevelUtils.getUUID(stack.getItemMeta());
+        } catch (Exception e) {
+            return null;
+        }
+        WeaponInstance instance = weaponInstanceMap.get(uuid);
+        System.out.println(instance);
+        if(instance != null) {
+            instance.slot = slot;
+            instance.player = player;
 
+        } else {
+            instance = getWeapon(stack.getItemMeta().getCustomModelData()).
+                    getWeaponNewInstance(
+                            player,
+                            player.getInventory().getHeldItemSlot(),
+                            stack
+                    );
+            weaponInstanceMap.put(instance.getUUID(),instance);
+        }
+        return instance;
+    }
 }

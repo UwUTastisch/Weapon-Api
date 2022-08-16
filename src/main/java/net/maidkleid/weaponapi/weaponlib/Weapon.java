@@ -14,7 +14,7 @@ public interface Weapon {
 
     AmmoType getAmmoType();
 
-    WeaponInstance getWeaponInstance(Player player, int slot, ItemStack stack);
+    WeaponInstance getWeaponNewInstance(Player player, int slot, ItemStack stack);
 
     Sound getShootSound(int level);
 
@@ -27,4 +27,8 @@ public interface Weapon {
     default double getBulletHeadShotDamage(int level) {
         return getBulletDamage(level)*1.4d;
     }
+
+    long getReloadMagazineTime(int level);
+
+    long getReloadTime(int level);
 }
