@@ -5,7 +5,7 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 
-public class ProjectileShootUpdateEvent extends Event {
+public class ProjectileShootUpdateEvent extends Event implements ProjectileShootProvider {
     private static final HandlerList HANDLERS_LIST = new HandlerList();
     private final ProjectileShoot<?> projectileShoot;
 
@@ -19,12 +19,12 @@ public class ProjectileShootUpdateEvent extends Event {
         return HANDLERS_LIST;
     }
 
-    public ProjectileShoot<?> getProjectileShoot() {
-        return projectileShoot;
-    }
-
     public static HandlerList getHandlerList() {
         return HANDLERS_LIST;
     }
 
+    @Override
+    public ProjectileShoot<?> getProjectile() {
+        return projectileShoot;
+    }
 }

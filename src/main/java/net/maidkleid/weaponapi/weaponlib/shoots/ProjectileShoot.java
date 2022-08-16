@@ -39,13 +39,10 @@ public class ProjectileShoot<T extends Projectile> extends Shoot {
 
     @Override
     protected boolean doUpdateTick() {
-        Location location = projectile.getLocation();
-        if(location.equals(tickPosition)) {
-            projectile.remove();
-            return false;
-        }
-        tickPosition = location;
-        return true;
+        tickPosition = projectile.getLocation();
+        boolean b = addTickPositionToTrace();
+        if(!b) projectile.remove();
+        return b;
     }
 
 

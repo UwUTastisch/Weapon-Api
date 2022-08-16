@@ -5,16 +5,23 @@ import org.bukkit.Location;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.util.Vector;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class Shoot {
 
     protected final WeaponInstance weaponInstance;
     protected final Location startPosition;
     protected Location tickPosition;
+
+    protected ArrayList<Vector> trace;
     protected final Vector velocity;
     public Shoot(WeaponInstance weaponInstance, Location startPosition, Vector velocity) {
+        trace = new ArrayList<>();
         this.weaponInstance = weaponInstance;
         this.startPosition = startPosition;
         this.tickPosition = startPosition.clone();
+        trace.add(tickPosition.toVector());
         this.velocity = velocity;
     }
 
@@ -30,13 +37,27 @@ public abstract class Shoot {
         return velocity.clone();
     }
 
-    abstract protected boolean doUpdateTick() ;
+    protected abstract boolean doUpdateTick();
 
     public WeaponInstance getWeaponInstance() {
         return weaponInstance;
     }
 
+    protected boolean addTraceLocation(Location l) {
+        boolean equals = l.toVector().equals(trace.get(trace.size() - 1));
+        trace.add(l.toVector());
+        return !equals;
+    }
+
+    protected boolean addTickPositionToTrace() {
+        return addTraceLocation(tickPosition);
+    }
+
     public void callHitEvent(ProjectileHitEvent event) {
 
+    }
+
+    public List<Vector> getTrace() {
+        return List.copyOf(trace);
     }
 }
