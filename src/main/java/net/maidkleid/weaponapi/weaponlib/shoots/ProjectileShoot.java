@@ -138,6 +138,10 @@ public class ProjectileShoot<T extends Projectile> extends Shoot {
         } else if(event.getHitBlock() != null) {
             newEvent = new ProjectileShootHitEvent(this, event.getHitBlock());
         }
+        onHit(event, newEvent);
+    }
+
+    private void onHit(ProjectileHitEvent event, ProjectileShootHitEvent newEvent) {
         if(newEvent == null) return;
         if(!newEvent.callEvent()) {
             event.setCancelled(false);
@@ -146,17 +150,25 @@ public class ProjectileShoot<T extends Projectile> extends Shoot {
         event.setCancelled(true);
         Projectile entity = event.getEntity();
         entity.remove();
-        if(event.getHitEntity() == null) return;
-        ProjectileShootDamageEvent damageEvent = new ProjectileShootDamageEvent(event.getHitEntity(),this);
+        Entity hitEntity = event.getHitEntity();
+        if(hitEntity == null) return;
+        onHitEntity(event, hitEntity);
+    }
+
+    private void onHitEntity(ProjectileHitEvent event, Entity hitEntity) {
+        ProjectileShootDamageEvent damageEvent = new ProjectileShootDamageEvent(hitEntity,this);
         if(!(event.getHitEntity() instanceof LivingEntity livingEntity)) {
             return;
         }
         if(damageEvent.callEvent()) {
-            livingEntity.setNoDamageTicks(0);;
-            livingEntity.damage(damageEvent.getFinalDamage());
-            livingEntity.setLastDamageCause(damageEvent);
-            livingEntity.setVelocity(livingEntity.getVelocity().add(damageEvent.getKnockBack()));
+            onDamage(damageEvent, livingEntity);
         }
+    }
 
+    protected void onDamage(ProjectileShootDamageEvent damageEvent, LivingEntity livingEntity) {
+        livingEntity.setNoDamageTicks(0);
+        livingEntity.damage(damageEvent.getFinalDamage());
+        livingEntity.setLastDamageCause(damageEvent);
+        livingEntity.setVelocity(livingEntity.getVelocity().add(damageEvent.getKnockBack()));
     }
 }
