@@ -8,6 +8,7 @@ import net.maidkleid.weaponapi.weaponlib.Weapon;
 import net.maidkleid.weaponapi.weaponlib.WeaponInstance;
 import net.maidkleid.weaponapi.weaponlib.shoots.ProjectileShoot;
 import org.bukkit.Location;
+import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Fireball;
@@ -58,5 +59,11 @@ public class Pistol implements Weapon {
     public long getReloadTime(int level) {
         return 300;
     }
+
+    @Override
+    public Particle getParticle() {
+        return Particle.CRIT;
+    }
+
 
 }

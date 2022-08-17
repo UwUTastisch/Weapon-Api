@@ -1,6 +1,7 @@
 package net.maidkleid.weaponapi.weaponlib;
 
 import net.maidkleid.weaponapi.utils.LevelMapper;
+import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -31,4 +32,14 @@ public interface Weapon {
     long getReloadMagazineTime(int level);
 
     long getReloadTime(int level);
+
+    Particle getParticle();
+
+    /**
+     * Defines the ParticleTraceDensity
+     * @return value > 0;
+     */
+    default double getParticleDensity() {
+        return 0.2;
+    }
 }

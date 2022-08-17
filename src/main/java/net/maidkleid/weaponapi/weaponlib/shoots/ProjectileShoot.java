@@ -5,6 +5,7 @@ import net.maidkleid.weaponapi.events.ProjectileShootDamageEvent;
 import net.maidkleid.weaponapi.events.ProjectileShootHitEvent;
 import net.maidkleid.weaponapi.events.ProjectileShootLaunchEvent;
 import net.maidkleid.weaponapi.events.ProjectileShootUpdateEvent;
+import net.maidkleid.weaponapi.utils.ParticleTrace;
 import net.maidkleid.weaponapi.utils.ProjectileUtils;
 import net.maidkleid.weaponapi.weaponlib.WeaponInstance;
 import org.bukkit.*;
@@ -39,9 +40,11 @@ public class ProjectileShoot<T extends Projectile> extends Shoot {
 
     @Override
     protected boolean doUpdateTick() {
+        Location oldTickPosition = tickPosition;
         tickPosition = projectile.getLocation();
         boolean b = addTickPositionToTrace();
         if(!b) projectile.remove();
+        else ParticleTrace.spawnParticleTrace(tickPosition,oldTickPosition,weaponInstance.getWeapon().getParticle(), weaponInstance.getWeapon().getParticleDensity());
         return b;
     }
 
