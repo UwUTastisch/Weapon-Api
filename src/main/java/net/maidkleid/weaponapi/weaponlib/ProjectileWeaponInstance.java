@@ -17,16 +17,23 @@ public class ProjectileWeaponInstance<T extends Projectile> extends WeaponInstan
         this.velocity = velocity;
     }
     public ProjectileShoot<T> doShoot() {
-        if(getCurrentAmmo() <= 0) {
+        int currentAmmo = getCurrentAmmo();
+        if(currentAmmo <= 0) {
             tryStartReload();
             return null;
         }
-        setCurrentAmmo(getCurrentAmmo()-1);
-        if(!tryUpdateStack()) return null;
+        if(getLeftReloadTime() > 0) return null;
         Location l = getHandlingPlayer().getEyeLocation();
-        return ProjectileShoot.shootWeapon(this,
+        ProjectileShoot<T> tProjectileShoot = ProjectileShoot.shootWeapon(this,
                 l,
                 l.getDirection().normalize().multiply(velocity), projectileClass);
+        reloadStart = System.currentTimeMillis();
+        if(tProjectileShoot == null) return null;
+        int newCurrentAmmo = currentAmmo - 1;
+        setCurrentAmmo(newCurrentAmmo);
+        if(newCurrentAmmo <= 0) tryStartReload();
+        if(!tryUpdateStack()) return null;
+        return tProjectileShoot;
     }
 
 }

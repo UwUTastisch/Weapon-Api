@@ -23,6 +23,7 @@ public abstract class WeaponInstance {
     protected boolean isMagReloading = false;
     private int reloadingMagTask;
     protected long reloadMagStart;
+    protected long reloadStart;
 
     protected WeaponInstance(Weapon weapon, Player player, int slot , ItemStack itemStack) {
         this.weapon = weapon;
@@ -67,7 +68,7 @@ public abstract class WeaponInstance {
     }
 
     public long getLeftReloadTime() {
-        return weapon.getReloadTime(getLevel()) + reloadMagStart - System.currentTimeMillis();
+        return weapon.getReloadTime(getLevel()) + reloadStart - System.currentTimeMillis();
     }
 
     public Player getHandlingPlayer() {
