@@ -1,6 +1,7 @@
 package net.maidkleid.weaponapi.weaponlib;
 
 import net.maidkleid.weaponapi.defaultweapons.Pistol;
+import net.maidkleid.weaponapi.defaultweapons.PumpGun;
 import net.maidkleid.weaponapi.utils.WeaponItemLowLevelUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -16,7 +17,7 @@ public class WeaponProvider {
     private static final HashMap<UUID,WeaponInstance> weaponInstanceMap = new HashMap<>();
 
     public static final Pistol PISTOL = addConfigWeapon(new Pistol(), 0);
-
+    public static final PumpGun PUMP_GUN = addConfigWeapon(new PumpGun(),1);
     public static Weapon getWeapon(int customModelData) {
         return configWeaponMap.get(getRangeID(customModelData));
     }

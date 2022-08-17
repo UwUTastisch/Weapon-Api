@@ -5,9 +5,19 @@ import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.Vector;
 
 public interface Weapon {
 
+
+    default Vector applySpread(Vector vector, int level) {
+        double spread = getSpread(level);
+        double angleHorizontal = (Math.random() * spread) - (spread / 2);
+        double angleVertical = (Math.random() * spread) - (spread / 2);
+        return vector.rotateAroundY(angleHorizontal);//vector.rotateAroundX(angleHorizontal)//.rotateAroundY(angleVertical);//.rotateAroundY(angleVertical).rotateAroundZ(angleVertical);
+    }
+
+    double getSpread(int level);
 
     int getMagSize(int level);
 

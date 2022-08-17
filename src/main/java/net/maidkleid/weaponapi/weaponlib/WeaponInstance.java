@@ -25,10 +25,12 @@ public abstract class WeaponInstance {
     protected long reloadMagStart;
     protected long reloadStart;
 
+
     protected WeaponInstance(Weapon weapon, Player player, int slot , ItemStack itemStack) {
         this.weapon = weapon;
         this.player = player;
         this.itemStack = itemStack;
+        this.itemStack.setAmount(1);
         this.slot = slot;
         this.weaponUUID = WeaponItemLowLevelUtils.getUUID(itemStack.getItemMeta());
     }

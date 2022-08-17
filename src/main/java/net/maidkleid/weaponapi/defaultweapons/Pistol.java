@@ -1,24 +1,20 @@
 package net.maidkleid.weaponapi.defaultweapons;
 
-import net.maidkleid.weaponapi.utils.LevelMapper;
-import net.maidkleid.weaponapi.utils.WeaponItemMidLevelUtils;
 import net.maidkleid.weaponapi.weaponlib.AmmoType;
 import net.maidkleid.weaponapi.weaponlib.ProjectileWeaponInstance;
 import net.maidkleid.weaponapi.weaponlib.Weapon;
-import net.maidkleid.weaponapi.weaponlib.WeaponInstance;
-import net.maidkleid.weaponapi.weaponlib.shoots.ProjectileShoot;
-import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
-import org.bukkit.entity.Arrow;
-import org.bukkit.entity.Fireball;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Snowball;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.Vector;
-
 public class Pistol implements Weapon {
+
+    @Override
+    public double getSpread(int level) {
+        return 0.1;
+    }
 
     @Override
     public int getMagSize(int level) {
