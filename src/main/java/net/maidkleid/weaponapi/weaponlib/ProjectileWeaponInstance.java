@@ -19,6 +19,7 @@ public class ProjectileWeaponInstance<T extends Projectile> extends WeaponInstan
         this.velocity = velocity;
     }
     public ProjectileShoot<T> doShoot() {
+        if(isMagReloading) return null;
         int currentAmmo = getCurrentAmmo();
         if(currentAmmo <= 0) {
             tryStartReload();

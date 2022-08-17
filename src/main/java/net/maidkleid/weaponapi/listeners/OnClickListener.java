@@ -15,18 +15,18 @@ import java.util.Objects;
 
 public class OnClickListener implements Listener {
 
-    private static final HashSet<Action> actions = new HashSet<>();
-
-    static {
-        actions.addAll(List.of(/*Action.RIGHT_CLICK_AIR,*/Action.RIGHT_CLICK_BLOCK,Action.LEFT_CLICK_BLOCK));
-    }
+    //private static final HashSet<Action> actions = new HashSet<>();
+    //
+    //static {
+    //    actions.addAll(List.of(/*Action.RIGHT_CLICK_AIR,*/Action.RIGHT_CLICK_BLOCK,Action.LEFT_CLICK_BLOCK));
+    //}
 
 
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {
         //System.out.println("Es hat geklappt");
         Action action = event.getAction();
-        if (!actions.contains(action)) return;
+        //if (!actions.contains(action)) return;
 
         //event.getPlayer().sendMessage("Shooting while Action: " + action + event.get//event.getPlayer().getInventory().getItem(Objects.requireNonNull(event.getHand())));
         ItemStack stack = event.getItem();

@@ -40,7 +40,7 @@ public abstract class WeaponInstance {
      * @return -500 if the ItemStack is not anymore in the current InventorySlot
      */
     public int getCurrentAmmo() {
-        if(!isStillInSlot()) return -500;
+        //if(!isStillInSlot()) return -500;
         try {
             return WeaponItemLowLevelUtils.getCurrentAmmo(itemStack.getItemMeta());
         } catch (Exception e) {
@@ -80,6 +80,10 @@ public abstract class WeaponInstance {
     public abstract @Nullable Shoot doShoot();
 
     public int tryStartReload() {
+        int magSize = getMagSize();
+        int currentAmmo = getCurrentAmmo();
+        //System.out.println(magSize + " " + currentAmmo);
+        if(magSize <= currentAmmo) return 0;
         isMagReloading = true;
         if(reloadingMagTask != 0) {
             return reloadingMagTask;
@@ -122,6 +126,7 @@ public abstract class WeaponInstance {
 
     public boolean isStillInSlot() {
         ItemStack stack = player.getInventory().getStorageContents()[slot];
+        //System.out.println(stack);
         return compareWeaponUUID(stack);
     }
 
