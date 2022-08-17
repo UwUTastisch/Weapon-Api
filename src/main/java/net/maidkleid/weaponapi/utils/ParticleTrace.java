@@ -13,6 +13,6 @@ public class ParticleTrace {
         double length = v.length();
         v.normalize().multiply(density);
 
-        for (double i = 0; i < length; i += 1/density) world.spawnParticle(p,l.add(v), 0,0,0,0);
+        for (double i = 0; i < length; i += density) world.spawnParticle(p,l.add(v), 0,0,0,0);
     }
 }

@@ -104,6 +104,7 @@ public abstract class WeaponInstance {
         player.sendActionBar(Component.text("Weapon has been Reloaded"));;
         breakReloading();
         setCurrentAmmo(weapon.getMagSize(getLevel()));
+        tryUpdateStack();
     }
 
     protected void setCurrentAmmo(int size) {
