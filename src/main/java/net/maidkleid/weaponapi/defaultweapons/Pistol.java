@@ -22,7 +22,7 @@ public class Pistol implements Weapon {
 
     @Override
     public int getMagSize(int level) {
-        return 12;
+        return 15;
     }
 
     @Override
@@ -37,7 +37,7 @@ public class Pistol implements Weapon {
 
     @Override
     public ProjectileWeaponInstance<Snowball> getWeaponNewInstance(Player player, int slot, ItemStack stack) {
-        return new ProjectileWeaponInstance<>(this, player, slot, stack, Snowball.class, 3.d);
+        return new ProjectileWeaponInstance<>(this, player, slot, stack, Snowball.class, 20.d);
     }
 
     @Override

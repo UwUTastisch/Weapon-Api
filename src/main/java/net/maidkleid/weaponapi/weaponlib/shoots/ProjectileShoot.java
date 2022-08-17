@@ -40,14 +40,18 @@ public class ProjectileShoot<T extends Projectile> extends Shoot {
 
     @Override
     protected boolean doUpdateTick() {
-        Location oldTickPosition = tickPosition;
-        tickPosition = projectile.getLocation();
-        boolean b = addTickPositionToTrace();
-        if(!b) projectile.remove();
-        else ParticleTrace.spawnParticleTrace(tickPosition,oldTickPosition,weaponInstance.getWeapon().getParticle(), weaponInstance.getWeapon().getParticleDensity());
-        return b;
+        return doUpdateTick(projectile.getLocation());
     }
 
+    private boolean doUpdateTick(Location newTickPosition) {
+        Location oldTickPosition = tickPosition;
+        tickPosition = newTickPosition;
+        boolean b = addTickPositionToTrace();
+        if(!b) projectile.remove();
+        else if(weaponInstance.getWeapon().getParticle() != null)
+            ParticleTrace.spawnParticleTrace(tickPosition, oldTickPosition,weaponInstance.getWeapon().getParticle(), weaponInstance.getWeapon().getParticleDensity());
+        return b;
+    }
 
 
     //-------------------STATIC---------------------
@@ -151,11 +155,27 @@ public class ProjectileShoot<T extends Projectile> extends Shoot {
         Projectile entity = event.getEntity();
         entity.remove();
         Entity hitEntity = event.getHitEntity();
-        if(hitEntity == null) return;
+        if(hitEntity == null) {
+            Location location = Objects.requireNonNull(event.getHitBlock()).getLocation();
+            Vector vec = trace.get(trace.size() - 1);
+            Vector pos = getVelocity().normalize().multiply(
+                    Math.abs(location.add(0.5,0.5,0.5).subtract(vec).toVector().length())
+            ).add(vec);
+            World world = location.getWorld();
+            doUpdateTick(pos.toLocation(world));
+            return;
+        }
         onHitEntity(event, hitEntity);
     }
 
     private void onHitEntity(ProjectileHitEvent event, Entity hitEntity) {
+        Location entityLocation = hitEntity.getLocation();
+        Vector vec = trace.get(trace.size() - 1);
+        Vector pos = getVelocity().normalize().multiply(
+                Math.abs(entityLocation.subtract(vec).add(hitEntity.getBoundingBox().getCenter()).toVector().length())
+        ).add(vec);
+        World world = entityLocation.getWorld();
+        doUpdateTick(pos.toLocation(world));
         ProjectileShootDamageEvent damageEvent = new ProjectileShootDamageEvent(hitEntity,this);
         if(!(event.getHitEntity() instanceof LivingEntity livingEntity)) {
             return;
