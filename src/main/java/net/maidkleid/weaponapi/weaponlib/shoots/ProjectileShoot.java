@@ -1,5 +1,11 @@
 package net.maidkleid.weaponapi.weaponlib.shoots;
 
+import com.comphenix.protocol.PacketType;
+import com.comphenix.protocol.ProtocolLib;
+import com.comphenix.protocol.ProtocolManager;
+import com.comphenix.protocol.events.ListenerPriority;
+import com.comphenix.protocol.events.PacketAdapter;
+import com.comphenix.protocol.events.PacketEvent;
 import net.maidkleid.weaponapi.WeaponAPI;
 import net.maidkleid.weaponapi.events.ProjectileShootDamageEvent;
 import net.maidkleid.weaponapi.events.ProjectileShootHitEvent;
@@ -59,6 +65,7 @@ public class ProjectileShoot<T extends Projectile> extends Shoot {
     //projectiles randomUUID
     private static final HashMap<UUID,ProjectileShoot<?>> shootHashMap = new HashMap<>();
     private static final Set<Projectile> projectileList = new HashSet<>();
+    private static final Set<Integer> entityIDs = new HashSet<>();
     private static int taskID;
 
     public static void reload(WeaponAPI api) {
@@ -66,6 +73,25 @@ public class ProjectileShoot<T extends Projectile> extends Shoot {
             Bukkit.getScheduler().cancelTask(taskID);
         }
         taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(api, ProjectileShoot::updateAllProjectiles,0,1);
+        ProtocolManager lib = WeaponAPI.getPlugin(WeaponAPI.class).getProtocolManager();
+        if(lib != null) {
+            lib.addPacketListener(new PacketAdapter(
+                    api,
+                    ListenerPriority.NORMAL,
+                    PacketType.Play.Server.SPAWN_ENTITY,
+                    PacketType.Play.Server.ENTITY_VELOCITY,
+                    PacketType.Play.Server.ENTITY_TELEPORT,
+                    PacketType.Play.Server.ENTITY_STATUS
+            ) {
+                @Override
+                public void onPacketSending(PacketEvent event) {
+                    int entityID = event.getPacket().getIntegers().read(0);//.getInt(event.getPacket().getStructures());
+
+                    //event.getPacket().get("Entity ID");
+                    event.setCancelled(entityIDs.contains(entityID));
+                }
+            });
+        }
     }
 
     private static void updateAllProjectiles() {
@@ -77,6 +103,7 @@ public class ProjectileShoot<T extends Projectile> extends Shoot {
                 if(p instanceof Arrow arrow) if(arrow.isInBlock()) arrow.remove();
                 if (p.isDead() || !p.isValid()) {
                     shootHashMap.remove(shootUUID);
+                    entityIDs.remove(p.getEntityId());
                     return true;
                 } else {
                     ProjectileShoot<?> projectileShoot = shootHashMap.get(shootUUID);
@@ -129,6 +156,7 @@ public class ProjectileShoot<T extends Projectile> extends Shoot {
         ProjectileUtils.setShootWeaponUUID(p,weaponInstance.getUUID());
         shootHashMap.put(ProjectileUtils.setRandomUUID(p), shoot);
         projectileList.add(p);
+        entityIDs.remove(p.getEntityId());
         return shoot;
     }
 

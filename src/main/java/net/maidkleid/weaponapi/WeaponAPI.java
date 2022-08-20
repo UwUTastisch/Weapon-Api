@@ -1,5 +1,11 @@
 package net.maidkleid.weaponapi;
 
+import com.comphenix.protocol.PacketType;
+import com.comphenix.protocol.ProtocolLibrary;
+import com.comphenix.protocol.ProtocolManager;
+import com.comphenix.protocol.events.ListenerPriority;
+import com.comphenix.protocol.events.PacketAdapter;
+import com.comphenix.protocol.events.PacketEvent;
 import net.maidkleid.weaponapi.commands.WeaponCommand;
 import net.maidkleid.weaponapi.listeners.OnClickListener;
 import net.maidkleid.weaponapi.listeners.OnItemDropEvent;
@@ -14,6 +20,16 @@ import java.util.Objects;
 
 public final class WeaponAPI extends JavaPlugin {
 
+    private ProtocolManager protocolManager;
+
+    public void onLoad() {
+        try {
+            protocolManager = ProtocolLibrary.getProtocolManager();
+
+        } catch (Exception e) {
+            getLogger().warning("SomeThing went wrong, Please Check ProtocolLib");
+        }
+    }
     @Override
     public void onEnable() {
         Bukkit.getPluginManager().registerEvents(new OnClickListener(), this);
@@ -29,5 +45,9 @@ public final class WeaponAPI extends JavaPlugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
+    }
+
+    public ProtocolManager getProtocolManager() {
+        return protocolManager;
     }
 }
