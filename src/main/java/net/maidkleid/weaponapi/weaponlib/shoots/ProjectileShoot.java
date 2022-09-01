@@ -61,7 +61,6 @@ public class ProjectileShoot<T extends Projectile> extends Shoot {
 
 
     //-------------------STATIC---------------------
-
     //projectiles randomUUID
     private static final HashMap<UUID,ProjectileShoot<?>> shootHashMap = new HashMap<>();
     private static final Set<Projectile> projectileList = new HashSet<>();
@@ -102,8 +101,7 @@ public class ProjectileShoot<T extends Projectile> extends Shoot {
                 if(hasUnloadedNeighbourChunk(p.getChunk()) || location.getY()>= 400) p.remove();
                 if(p instanceof Arrow arrow) if(arrow.isInBlock()) arrow.remove();
                 if (p.isDead() || !p.isValid()) {
-                    shootHashMap.remove(shootUUID);
-                    entityIDs.remove(p.getEntityId());
+                    removeInvisProjectile(p, shootUUID);
                     return true;
                 } else {
                     ProjectileShoot<?> projectileShoot = shootHashMap.get(shootUUID);
@@ -116,6 +114,11 @@ public class ProjectileShoot<T extends Projectile> extends Shoot {
             }
             return false;
         });
+    }
+
+    private static void removeInvisProjectile(Projectile p, UUID shootUUID) {
+        shootHashMap.remove(shootUUID);
+        entityIDs.remove(p.getEntityId());
     }
 
     private static boolean hasUnloadedNeighbourChunk(Chunk chunk) {
@@ -137,10 +140,20 @@ public class ProjectileShoot<T extends Projectile> extends Shoot {
 
     public static <T extends Projectile> @Nullable ProjectileShoot<T> shootWeapon(WeaponInstance weaponInstance, Location startPosition, Vector velocity, Class<T> projectileClass) {
         ProjectileShoot<T> shoot = new ProjectileShoot<>(weaponInstance, startPosition, velocity, projectileClass);
-        Projectile p = shoot.launch();
+        //Projectile p = shoot.launch();
+        Location clone = startPosition.clone();
+        clone.setY(-80);
+        T p = clone.getWorld().spawn(clone, projectileClass);
+        UUID shootUUID = ProjectileUtils.setRandomUUID(p);
+        shootHashMap.put(shootUUID, shoot);
+        projectileList.add(p);
+        entityIDs.remove(p.getEntityId());
+        p.teleport(startPosition);
+
         ProjectileShootLaunchEvent event = new ProjectileShootLaunchEvent(shoot);
         Bukkit.getPluginManager().callEvent(event);
         if(event.isCancelled()) {
+            removeInvisProjectile(p,shootUUID);
             p.remove();
             return null;
         }
@@ -154,9 +167,7 @@ public class ProjectileShoot<T extends Projectile> extends Shoot {
         p.setVelocity(velocity);
         p.setSilent(true);
         ProjectileUtils.setShootWeaponUUID(p,weaponInstance.getUUID());
-        shootHashMap.put(ProjectileUtils.setRandomUUID(p), shoot);
-        projectileList.add(p);
-        entityIDs.remove(p.getEntityId());
+
         return shoot;
     }
 

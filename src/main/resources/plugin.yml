@@ -1,8 +1,6 @@
 name: Weapon_API
 version: '${project.version}'
 main: net.maidkleid.weaponapi.WeaponAPI
-softdepend:
-  - ProtocolLib
 api-version: 1.19
 authors: [ Hero_JonasHD ]
 commands:
