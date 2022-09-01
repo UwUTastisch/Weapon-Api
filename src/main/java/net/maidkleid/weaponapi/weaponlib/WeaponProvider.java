@@ -69,7 +69,7 @@ public class WeaponProvider {
             return null;
         }
         WeaponInstance instance = weaponInstanceMap.get(uuid);
-        System.out.println(instance);
+        //System.out.println(instance);
         if(instance != null) {
             instance.slot = slot;
             instance.player = player;

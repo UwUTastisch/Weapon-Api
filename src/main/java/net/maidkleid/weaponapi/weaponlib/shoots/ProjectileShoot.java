@@ -72,14 +72,19 @@ public class ProjectileShoot<T extends Projectile> extends Shoot {
             Bukkit.getScheduler().cancelTask(taskID);
         }
         taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(api, ProjectileShoot::updateAllProjectiles,0,1);
-        ProtocolManager lib = WeaponAPI.getPlugin(WeaponAPI.class).getProtocolManager();
+        ProtocolManager lib = api.getProtocolManager();
+        api.getLogger().info("&aArrowRemover is Loaded " + lib);
         if(lib != null) {
+
             lib.addPacketListener(new PacketAdapter(
                     api,
                     ListenerPriority.NORMAL,
                     PacketType.Play.Server.SPAWN_ENTITY,
                     PacketType.Play.Server.ENTITY_VELOCITY,
                     PacketType.Play.Server.ENTITY_TELEPORT,
+                    PacketType.Play.Server.ENTITY_METADATA,
+                    PacketType.Play.Server.ENTITY_SOUND,
+                    PacketType.Play.Server.ENTITY_EFFECT,
                     PacketType.Play.Server.ENTITY_STATUS
             ) {
                 @Override
@@ -87,7 +92,11 @@ public class ProjectileShoot<T extends Projectile> extends Shoot {
                     int entityID = event.getPacket().getIntegers().read(0);//.getInt(event.getPacket().getStructures());
 
                     //event.getPacket().get("Entity ID");
-                    event.setCancelled(entityIDs.contains(entityID));
+                    boolean contains = entityIDs.contains(entityID);
+                    if(contains) {
+                        //System.out.println(entityID + " hey");
+                        event.setCancelled(true);
+                    }
                 }
             });
         }
@@ -144,11 +153,13 @@ public class ProjectileShoot<T extends Projectile> extends Shoot {
         Location clone = startPosition.clone();
         clone.setY(-80);
         T p = clone.getWorld().spawn(clone, projectileClass);
+        shoot.projectile = p;
         UUID shootUUID = ProjectileUtils.setRandomUUID(p);
+        p.setShooter(weaponInstance.getHandlingPlayer());
         shootHashMap.put(shootUUID, shoot);
         projectileList.add(p);
-        entityIDs.remove(p.getEntityId());
-        p.teleport(startPosition);
+        entityIDs.add(p.getEntityId());
+        p.teleport(startPosition.clone().add(velocity.clone().normalize().multiply(0.1)));
 
         ProjectileShootLaunchEvent event = new ProjectileShootLaunchEvent(shoot);
         Bukkit.getPluginManager().callEvent(event);

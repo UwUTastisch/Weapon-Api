@@ -23,12 +23,7 @@ public final class WeaponAPI extends JavaPlugin {
     private ProtocolManager protocolManager;
 
     public void onLoad() {
-        try {
-            protocolManager = ProtocolLibrary.getProtocolManager();
 
-        } catch (Exception e) {
-            getLogger().warning("SomeThing went wrong, Please Check ProtocolLib");
-        }
     }
     @Override
     public void onEnable() {
@@ -37,6 +32,13 @@ public final class WeaponAPI extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new OnItemDropEvent(), this);
         //Bukkit.getPluginManager().registerEvents(new Test(), this);
         Objects.requireNonNull(getCommand("weapon")).setExecutor(new WeaponCommand());
+
+        try {
+            protocolManager = ProtocolLibrary.getProtocolManager();
+
+        } catch (Exception e) {
+            getLogger().warning("SomeThing went wrong, Please Check ProtocolLib");
+        }
         ProjectileShoot.reload(this);
         // Plugin startup logic
 
