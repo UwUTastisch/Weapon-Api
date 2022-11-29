@@ -1,11 +1,14 @@
 package net.maidkleid.weaponapi.weaponlib;
 
+import net.maidkleid.weaponapi.WeaponAPI;
 import net.maidkleid.weaponapi.defaultweapons.Pistol;
 import net.maidkleid.weaponapi.defaultweapons.PumpGun;
 import net.maidkleid.weaponapi.utils.WeaponItemLowLevelUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.java.JavaPlugin;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -47,6 +50,7 @@ public class WeaponProvider {
      * @param rangeID not allowed to be smaller than 1000
      */
     public static <T extends Weapon> T addConfigWeapon(T weapon, int rangeID) {
+        WeaponAPI.getPlugin(WeaponAPI.class).getLogger().info("Loading Weapon: " + weapon.getName() + ", rangeID: " + rangeID + ", customModelID: " + getLowestCustomModelDataID(rangeID));
         configWeaponMap.put(rangeID,weapon);
         configNameWeaponMap.put(weapon.getName(), rangeID);
         return weapon;
@@ -61,7 +65,7 @@ public class WeaponProvider {
     }
 
 
-    public static WeaponInstance getWeaponInstance(ItemStack stack, Player player, int slot) {
+    public static @Nullable WeaponInstance getWeaponInstance(ItemStack stack, Player player, int slot) {
         UUID uuid;
         try {
             uuid = WeaponItemLowLevelUtils.getUUID(stack.getItemMeta());
